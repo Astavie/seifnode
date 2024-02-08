@@ -291,7 +291,7 @@ NAN_METHOD(RNG::isInitialized) {
     std::string fileId = "./";
     if (!info[1]->IsUndefined()) {
 
-        v8::String::Utf8Value str(info[1]->ToString());
+        v8::String::Utf8Value str(info[1]->ToString(Nan::GetCurrentContext()));
         fileId = *str;
 
     }
@@ -391,7 +391,7 @@ NAN_METHOD(RNG::initialize) {
     std::string fileId = "./";
     if (!info[1]->IsUndefined()) {
 
-        v8::String::Utf8Value str(info[1]->ToString());
+        v8::String::Utf8Value str(info[1]->ToString(Nan::GetCurrentContext()));
         fileId = *str;
 
     }
@@ -573,8 +573,8 @@ void RNG::Init(v8::Local<v8::Object> exports) {
     Nan::SetPrototypeMethod(tpl, "saveState", saveState);
     Nan::SetPrototypeMethod(tpl, "destroy", destroy);
 
-    constructor.Reset(tpl->GetFunction());
+    constructor.Reset(tpl->GetFunction(Nan::GetCurrentContext()));
 
     // Setting node.js module.exports.
-    exports->Set(Nan::New("RNG").ToLocalChecked(), tpl->GetFunction());
+    exports->Set(Nan::New("RNG").ToLocalChecked(), tpl->GetFunction(Nan::GetCurrentContext()));
 }

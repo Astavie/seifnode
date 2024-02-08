@@ -135,7 +135,7 @@ NAN_METHOD(SEIFSHA3::hash) {
 
     // Check if first argument is a buffer or a string and hash accordingly.
     if (!node::Buffer::HasInstance(info[0])) {
-        v8::String::Utf8Value str(info[0]->ToString());
+        v8::String::Utf8Value str(info[0]->ToString(Nan::GetCurrentContext()));
 
         /* Using crypto++ sha3-256 hash function to hash data and store in
          * 'digest' array. Definition of 'hashString' can be found in 'util.h'.
@@ -188,8 +188,8 @@ void SEIFSHA3::Init(v8::Local<v8::Object> exports) {
     // Prototype
     Nan::SetPrototypeMethod(tpl, "hash", hash);
 
-    constructor.Reset(tpl->GetFunction());
+    constructor.Reset(tpl->GetFunction(Nan::GetCurrentContext()));
 
     // Setting node.js module.exports.
-    exports->Set(Nan::New("SEIFSHA3").ToLocalChecked(), tpl->GetFunction());
+    exports->Set(Nan::New("SEIFSHA3").ToLocalChecked(), tpl->GetFunction(Nan::GetCurrentContext()));
 }

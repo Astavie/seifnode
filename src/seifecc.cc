@@ -778,7 +778,7 @@ NAN_METHOD(SEIFECC::New) {
          */
         std::string folder = "./";
         if (!info[1]->IsUndefined()) {
-            v8::String::Utf8Value str(info[1]->ToString());
+            v8::String::Utf8Value str(info[1]->ToString(Nan::GetCurrentContext()));
             folder = *str;
             if (folder.back() != '/') {
                 folder = folder + "/";
@@ -962,7 +962,7 @@ NAN_METHOD(SEIFECC::encrypt) {
     SEIFECC* obj = ObjectWrap::Unwrap<SEIFECC>(info.Holder());
 
     // Unwrap the first argument to get the hex encoded public key string.
-    v8::String::Utf8Value str(info[0]->ToString());
+    v8::String::Utf8Value str(info[0]->ToString(Nan::GetCurrentContext()));
     std::string pubStr(*str);
 
     // Unwrap the second argument to get the message buffer to be encrypted.
@@ -1070,7 +1070,7 @@ NAN_METHOD(SEIFECC::decrypt) {
     SEIFECC* obj = ObjectWrap::Unwrap<SEIFECC>(info.Holder());
 
     // Unwrap the first argument to get the hex encoded private key string.
-    v8::String::Utf8Value str(info[0]->ToString());
+    v8::String::Utf8Value str(info[0]->ToString(Nan::GetCurrentContext()));
     std::string privStr(*str);
 
     // Unwrap the second argument to get the cipher buffer.
@@ -1157,8 +1157,8 @@ void SEIFECC::Init(v8::Local<v8::Object> exports) {
     Nan::SetPrototypeMethod(tpl, "encrypt", encrypt);
     Nan::SetPrototypeMethod(tpl, "decrypt", decrypt);
 
-    constructor.Reset(tpl->GetFunction());
+    constructor.Reset(tpl->GetFunction(Nan::GetCurrentContext()));
 
     // Setting node.js module.exports.
-    exports->Set(Nan::New("SEIFECC").ToLocalChecked(), tpl->GetFunction());
+    exports->Set(Nan::New("SEIFECC").ToLocalChecked(), tpl->GetFunction(Nan::GetCurrentContext()));
 }

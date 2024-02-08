@@ -575,8 +575,8 @@ void AESXOR256::Init(v8::Local<v8::Object> exports) {
     Nan::SetPrototypeMethod(tpl, "encrypt", encrypt);
     Nan::SetPrototypeMethod(tpl, "decrypt", decrypt);
 
-    constructor.Reset(tpl->GetFunction());
+    constructor.Reset(tpl->GetFunction(Nan::GetCurrentContext()));
 
     // Setting node.js module.exports.
-    exports->Set(Nan::New("AESXOR256").ToLocalChecked(), tpl->GetFunction());
+    exports->Set(Nan::New("AESXOR256").ToLocalChecked(), tpl->GetFunction(Nan::GetCurrentContext()));
 }
