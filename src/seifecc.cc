@@ -736,6 +736,8 @@ bool SEIFECC::generateKeys(
  */
 NAN_METHOD(SEIFECC::New) {
 
+    Local<Context> context = Nan::GetCurrentContext();
+
     if (info.IsConstructCall()) {
 
         // Invoked as constructor: 'let obj = new SEIFECC()'.
@@ -778,7 +780,7 @@ NAN_METHOD(SEIFECC::New) {
          */
         std::string folder = "./";
         if (!info[1]->IsUndefined()) {
-            v8::String::Utf8Value str(info[1]->ToString(Nan::GetCurrentContext()));
+            v8::String::Utf8Value str(context->GetIsolate(), info[1]->ToString(context));
             folder = *str;
             if (folder.back() != '/') {
                 folder = folder + "/";
@@ -804,7 +806,7 @@ NAN_METHOD(SEIFECC::New) {
         }
 
         v8::Local<v8::Function> cons = Nan::New<v8::Function>(constructor);
-        info.GetReturnValue().Set(cons->NewInstance(argc, argv.data()));
+        info.GetReturnValue().Set(cons->NewInstance(context, argc, argv.data()));
 
     }
 }
@@ -947,6 +949,8 @@ NAN_METHOD(SEIFECC::generateKeys) {
  */
 NAN_METHOD(SEIFECC::encrypt) {
 
+    Local<Context> context = Nan::GetCurrentContext();
+
     // Check arguments.
     if (info[0]->IsUndefined()) {
         Nan::ThrowError("Incorrect Arguments. Missing Public key string");
@@ -962,7 +966,7 @@ NAN_METHOD(SEIFECC::encrypt) {
     SEIFECC* obj = ObjectWrap::Unwrap<SEIFECC>(info.Holder());
 
     // Unwrap the first argument to get the hex encoded public key string.
-    v8::String::Utf8Value str(info[0]->ToString(Nan::GetCurrentContext()));
+    v8::String::Utf8Value str(context->GetIsolate(), info[0]->ToString(context));
     std::string pubStr(*str);
 
     // Unwrap the second argument to get the message buffer to be encrypted.
@@ -1143,6 +1147,8 @@ NAN_METHOD(SEIFECC::decrypt) {
  */
 void SEIFECC::Init(v8::Local<v8::Object> exports) {
 
+    Local<Context> context = Nan::GetCurrentContext();
+
     Nan::HandleScope scope;
 
     // Prepare constructor template.
@@ -1157,8 +1163,8 @@ void SEIFECC::Init(v8::Local<v8::Object> exports) {
     Nan::SetPrototypeMethod(tpl, "encrypt", encrypt);
     Nan::SetPrototypeMethod(tpl, "decrypt", decrypt);
 
-    constructor.Reset(tpl->GetFunction(Nan::GetCurrentContext()));
+    constructor.Reset(context->GetIsolate(), tpl->GetFunction(context));
 
     // Setting node.js module.exports.
-    exports->Set(Nan::New("SEIFECC").ToLocalChecked(), tpl->GetFunction(Nan::GetCurrentContext()));
+    exports->Set(context, Nan::New("SEIFECC").ToLocalChecked(), tpl->GetFunction(context));
 }

@@ -75,6 +75,8 @@ Nan::Persistent<v8::Function> SEIFSHA3::constructor;
  */
 NAN_METHOD(SEIFSHA3::New) {
 
+    Local<Context> context = Nan::GetCurrentContext();
+
     if (info.IsConstructCall()) {
 
         // Invoked as constructor: 'let obj = new SEIFSHA3()'.
@@ -96,7 +98,7 @@ NAN_METHOD(SEIFSHA3::New) {
         }
 
         v8::Local<v8::Function> cons = Nan::New<v8::Function>(constructor);
-        info.GetReturnValue().Set(cons->NewInstance(argc, argv.data()));
+        info.GetReturnValue().Set(cons->NewInstance(context, argc, argv.data()));
 
     }
 }
@@ -123,6 +125,8 @@ NAN_METHOD(SEIFSHA3::New) {
  */
 NAN_METHOD(SEIFSHA3::hash) {
 
+    Local<Context> context = Nan::GetCurrentContext();
+
     // Checking arguments and unwrapping them to get the string data.
     if (info[0]->IsUndefined()) {
         Nan::ThrowError("Incorrect Arguments. Value to be hashed not "
@@ -135,7 +139,7 @@ NAN_METHOD(SEIFSHA3::hash) {
 
     // Check if first argument is a buffer or a string and hash accordingly.
     if (!node::Buffer::HasInstance(info[0])) {
-        v8::String::Utf8Value str(info[0]->ToString(Nan::GetCurrentContext()));
+        v8::String::Utf8Value str(context->GetIsolate(), info[0]->ToString(context));
 
         /* Using crypto++ sha3-256 hash function to hash data and store in
          * 'digest' array. Definition of 'hashString' can be found in 'util.h'.
@@ -178,6 +182,8 @@ NAN_METHOD(SEIFSHA3::hash) {
  */
 void SEIFSHA3::Init(v8::Local<v8::Object> exports) {
 
+    Local<Context> context = Nan::GetCurrentContext();
+
     Nan::HandleScope scope;
 
     // Prepare constructor template.
@@ -188,8 +194,8 @@ void SEIFSHA3::Init(v8::Local<v8::Object> exports) {
     // Prototype
     Nan::SetPrototypeMethod(tpl, "hash", hash);
 
-    constructor.Reset(tpl->GetFunction(Nan::GetCurrentContext()));
+    constructor.Reset(context->GetIsolate(), tpl->GetFunction(context));
 
     // Setting node.js module.exports.
-    exports->Set(Nan::New("SEIFSHA3").ToLocalChecked(), tpl->GetFunction(Nan::GetCurrentContext()));
+    exports->Set(context, Nan::New("SEIFSHA3").ToLocalChecked(), tpl->GetFunction(context));
 }

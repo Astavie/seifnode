@@ -215,6 +215,8 @@ void RNG::Worker::Execute() {
  */
 NAN_METHOD(RNG::New) {
 
+  Local<Context> context = Nan::GetCurrentContext();
+
 	if (info.IsConstructCall()) {
 
         // Invoked as constructor: 'let obj = new RNG()'.
@@ -236,7 +238,7 @@ NAN_METHOD(RNG::New) {
         }
 
         v8::Local<v8::Function> cons = Nan::New<v8::Function>(constructor);
-        info.GetReturnValue().Set(cons->NewInstance(argc, argv.data()));
+        info.GetReturnValue().Set(cons->NewInstance(context, argc, argv.data()));
     }
 }
 
@@ -266,6 +268,8 @@ NAN_METHOD(RNG::New) {
  */
 NAN_METHOD(RNG::isInitialized) {
 
+    Local<Context> context = Nan::GetCurrentContext();
+
     RNG* obj = ObjectWrap::Unwrap<RNG>(info.Holder());
 
     // Check arguments.
@@ -291,7 +295,7 @@ NAN_METHOD(RNG::isInitialized) {
     std::string fileId = "./";
     if (!info[1]->IsUndefined()) {
 
-        v8::String::Utf8Value str(info[1]->ToString(Nan::GetCurrentContext()));
+        v8::String::Utf8Value str(context->GetIsolate(), info[1]->ToString(context));
         fileId = *str;
 
     }
@@ -366,6 +370,8 @@ NAN_METHOD(RNG::entropyStrength) {
  */
 NAN_METHOD(RNG::initialize) {
 
+    Local<Context> context = Nan::GetCurrentContext();
+
     RNG* obj = ObjectWrap::Unwrap<RNG>(info.Holder());
 
     // Check arguments
@@ -391,7 +397,7 @@ NAN_METHOD(RNG::initialize) {
     std::string fileId = "./";
     if (!info[1]->IsUndefined()) {
 
-        v8::String::Utf8Value str(info[1]->ToString(Nan::GetCurrentContext()));
+        v8::String::Utf8Value str(context->GetIsolate(), info[1]->ToString(context));
         fileId = *str;
 
     }
@@ -558,6 +564,8 @@ NAN_METHOD(RNG::destroy) {
  */
 void RNG::Init(v8::Local<v8::Object> exports) {
 
+    Local<Context> context = Nan::GetCurrentContext();
+
     Nan::HandleScope scope;
 
     // Prepare constructor template.
@@ -573,8 +581,8 @@ void RNG::Init(v8::Local<v8::Object> exports) {
     Nan::SetPrototypeMethod(tpl, "saveState", saveState);
     Nan::SetPrototypeMethod(tpl, "destroy", destroy);
 
-    constructor.Reset(tpl->GetFunction(Nan::GetCurrentContext()));
+    constructor.Reset(context->GetIsolate(), tpl->GetFunction(context));
 
     // Setting node.js module.exports.
-    exports->Set(Nan::New("RNG").ToLocalChecked(), tpl->GetFunction(Nan::GetCurrentContext()));
+    exports->Set(context, Nan::New("RNG").ToLocalChecked(), tpl->GetFunction(context));
 }

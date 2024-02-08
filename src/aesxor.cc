@@ -332,6 +332,8 @@ void AESXOR256::xorRandomData(std::vector<uint8_t>& output,
  */
 NAN_METHOD(AESXOR256::New) {
 
+    Local<Context> context = Nan::GetCurrentContext();
+
     if (info.IsConstructCall()) {
         // Invoked as constructor: `new AESXOR256(...)`.
 
@@ -372,7 +374,7 @@ NAN_METHOD(AESXOR256::New) {
         }
 
         v8::Local<v8::Function> cons = Nan::New<v8::Function>(constructor);
-        info.GetReturnValue().Set(cons->NewInstance(argc, argv.data()));
+        info.GetReturnValue().Set(cons->NewInstance(context, argc, argv.data()));
 
     }
 }
@@ -564,6 +566,8 @@ NAN_METHOD(AESXOR256::decrypt) {
  */
 void AESXOR256::Init(v8::Local<v8::Object> exports) {
 
+    Local<Context> context = Nan::GetCurrentContext();
+
     Nan::HandleScope scope;
 
     // Prepare constructor template.
@@ -575,8 +579,8 @@ void AESXOR256::Init(v8::Local<v8::Object> exports) {
     Nan::SetPrototypeMethod(tpl, "encrypt", encrypt);
     Nan::SetPrototypeMethod(tpl, "decrypt", decrypt);
 
-    constructor.Reset(tpl->GetFunction(Nan::GetCurrentContext()));
+    constructor.Reset(context->GetIsolate(), tpl->GetFunction(context));
 
     // Setting node.js module.exports.
-    exports->Set(Nan::New("AESXOR256").ToLocalChecked(), tpl->GetFunction(Nan::GetCurrentContext()));
+    exports->Set(context, Nan::New("AESXOR256").ToLocalChecked(), tpl->GetFunction(context));
 }
