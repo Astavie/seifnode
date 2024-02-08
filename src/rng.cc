@@ -215,7 +215,7 @@ void RNG::Worker::Execute() {
  */
 NAN_METHOD(RNG::New) {
 
-  Local<Context> context = Nan::GetCurrentContext();
+  v8::Local<v8::Context> context = Nan::GetCurrentContext();
 
 	if (info.IsConstructCall()) {
 
@@ -268,7 +268,7 @@ NAN_METHOD(RNG::New) {
  */
 NAN_METHOD(RNG::isInitialized) {
 
-    Local<Context> context = Nan::GetCurrentContext();
+    v8::Local<v8::Context> context = Nan::GetCurrentContext();
 
     RNG* obj = ObjectWrap::Unwrap<RNG>(info.Holder());
 
@@ -370,7 +370,7 @@ NAN_METHOD(RNG::entropyStrength) {
  */
 NAN_METHOD(RNG::initialize) {
 
-    Local<Context> context = Nan::GetCurrentContext();
+    v8::Local<v8::Context> context = Nan::GetCurrentContext();
 
     RNG* obj = ObjectWrap::Unwrap<RNG>(info.Holder());
 
@@ -564,7 +564,7 @@ NAN_METHOD(RNG::destroy) {
  */
 void RNG::Init(v8::Local<v8::Object> exports) {
 
-    Local<Context> context = Nan::GetCurrentContext();
+    v8::Local<v8::Context> context = Nan::GetCurrentContext();
 
     Nan::HandleScope scope;
 

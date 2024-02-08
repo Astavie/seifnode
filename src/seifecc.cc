@@ -736,7 +736,7 @@ bool SEIFECC::generateKeys(
  */
 NAN_METHOD(SEIFECC::New) {
 
-    Local<Context> context = Nan::GetCurrentContext();
+    v8::Local<v8::Context> context = Nan::GetCurrentContext();
 
     if (info.IsConstructCall()) {
 
@@ -949,7 +949,7 @@ NAN_METHOD(SEIFECC::generateKeys) {
  */
 NAN_METHOD(SEIFECC::encrypt) {
 
-    Local<Context> context = Nan::GetCurrentContext();
+    v8::Local<v8::Context> context = Nan::GetCurrentContext();
 
     // Check arguments.
     if (info[0]->IsUndefined()) {
@@ -1147,7 +1147,7 @@ NAN_METHOD(SEIFECC::decrypt) {
  */
 void SEIFECC::Init(v8::Local<v8::Object> exports) {
 
-    Local<Context> context = Nan::GetCurrentContext();
+    v8::Local<v8::Context> context = Nan::GetCurrentContext();
 
     Nan::HandleScope scope;
 

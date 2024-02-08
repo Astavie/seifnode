@@ -75,7 +75,7 @@ Nan::Persistent<v8::Function> SEIFSHA3::constructor;
  */
 NAN_METHOD(SEIFSHA3::New) {
 
-    Local<Context> context = Nan::GetCurrentContext();
+    v8::Local<v8::Context> context = Nan::GetCurrentContext();
 
     if (info.IsConstructCall()) {
 
@@ -125,7 +125,7 @@ NAN_METHOD(SEIFSHA3::New) {
  */
 NAN_METHOD(SEIFSHA3::hash) {
 
-    Local<Context> context = Nan::GetCurrentContext();
+    v8::Local<v8::Context> context = Nan::GetCurrentContext();
 
     // Checking arguments and unwrapping them to get the string data.
     if (info[0]->IsUndefined()) {
@@ -182,7 +182,7 @@ NAN_METHOD(SEIFSHA3::hash) {
  */
 void SEIFSHA3::Init(v8::Local<v8::Object> exports) {
 
-    Local<Context> context = Nan::GetCurrentContext();
+    v8::Local<v8::Context> context = Nan::GetCurrentContext();
 
     Nan::HandleScope scope;
 

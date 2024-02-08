@@ -332,7 +332,7 @@ void AESXOR256::xorRandomData(std::vector<uint8_t>& output,
  */
 NAN_METHOD(AESXOR256::New) {
 
-    Local<Context> context = Nan::GetCurrentContext();
+    v8::Local<v8::Context> context = Nan::GetCurrentContext();
 
     if (info.IsConstructCall()) {
         // Invoked as constructor: `new AESXOR256(...)`.
@@ -566,7 +566,7 @@ NAN_METHOD(AESXOR256::decrypt) {
  */
 void AESXOR256::Init(v8::Local<v8::Object> exports) {
 
-    Local<Context> context = Nan::GetCurrentContext();
+    v8::Local<v8::Context> context = Nan::GetCurrentContext();
 
     Nan::HandleScope scope;
 
