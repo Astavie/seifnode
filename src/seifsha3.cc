@@ -176,7 +176,7 @@ NAN_METHOD(SEIFSHA3::hash) {
  *
  * @return void
  */
-void SEIFSHA3::Init(v8::Handle<v8::Object> exports) {
+void SEIFSHA3::Init(v8::Local<v8::Object> exports) {
 
     Nan::HandleScope scope;
 

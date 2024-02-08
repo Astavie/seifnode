@@ -52,7 +52,7 @@
  * @param target refers to the node.js module exports object
  * @return void
  */
-void Initialize(v8::Handle<v8::Object> target) {
+void Initialize(v8::Local<v8::Object> target) {
 	SEIFECC::Init(target);
 	AESXOR256::Init(target);
 	RNG::Init(target);

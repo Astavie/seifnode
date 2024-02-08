@@ -312,7 +312,7 @@ class RNG : public Nan::ObjectWrap {
 		 *
 		 * @return void
 		 */
-    	static void Init(v8::Handle<v8::Object> exports);
+    	static void Init(v8::Local<v8::Object> exports);
 
 };
 

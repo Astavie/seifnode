@@ -1141,7 +1141,7 @@ NAN_METHOD(SEIFECC::decrypt) {
  *
  * @return void
  */
-void SEIFECC::Init(v8::Handle<v8::Object> exports) {
+void SEIFECC::Init(v8::Local<v8::Object> exports) {
 
     Nan::HandleScope scope;
 

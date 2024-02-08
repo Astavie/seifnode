@@ -556,7 +556,7 @@ NAN_METHOD(RNG::destroy) {
  *
  * @return void
  */
-void RNG::Init(v8::Handle<v8::Object> exports) {
+void RNG::Init(v8::Local<v8::Object> exports) {
 
     Nan::HandleScope scope;
 

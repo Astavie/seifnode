@@ -562,7 +562,7 @@ NAN_METHOD(AESXOR256::decrypt) {
  *
  * @return void
  */
-void AESXOR256::Init(v8::Handle<v8::Object> exports) {
+void AESXOR256::Init(v8::Local<v8::Object> exports) {
 
     Nan::HandleScope scope;
 
